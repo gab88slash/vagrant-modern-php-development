@@ -1,0 +1,25 @@
+---
+# This role will create the default variables if not already provided
+
+# define project_name based on directory if not provided
+
+- name: Get project directory
+  shell: echo "$PWD" | sed 's!.*/!!'
+  register: __project_name
+  when: project_name == ""
+
+- name: Set project name based on project directory
+  set_fact:
+    project_name: "{{ __project_name.stdout }}"
+  when: project_name == ""
+
+# now that we are sure project_name is well defined we can define the default variables
+- name: Include default variables
+  include_vars: basic_conventions.yml
+
+# for each variable check if already defined if not define it
+- name: If is not defined we define it
+  set_fact:
+    "{{ item }}": "{{ vars['__' + item ] }}"
+  with_items: "{{ generating_variables }}"
+  when: "{{ item }} == ''"
