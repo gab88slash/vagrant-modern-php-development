@@ -1,0 +1,3 @@
+- project: prova
+- project_root: vagrant/{{project}}/public
+- sql_user: "{{ project }}"

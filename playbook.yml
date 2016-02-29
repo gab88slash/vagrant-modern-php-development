@@ -1,7 +1,9 @@
 ---
   - name: Easy Dev Configuration for Laravel with Ansible
     hosts: all
-    sudo: True
+    become: True
+    vars_files:
+      - config.yml
     #or
     #tasks:
     #or
@@ -12,16 +14,16 @@
         apache_remove_default_vhost: true
         apache_vhosts:
           - servername: localhost
-            documentroot: "/vagrant/wabe/public"
+            documentroot: "{{ project_root }}"
       #Install mysql and configure it with basic settings
       # plus a db and a user with privileges on that db
       - role: geerlingguy.mysql
         mysql_databases:
-          - name: project
+          - name: "{{ project }}"
         mysql_users:
-          - name: local
-            password: local
-            priv: project.*:ALL
+          - name: "{{ sql_user }}"
+            password: "{{ sql_user }}"
+            priv: "{{ project }}.*:ALL"
     # Install php and package needed by debian based distribution
       - role: geerlingguy.php
       # Install e configure phpmyadmin
