@@ -1,0 +1,16 @@
+---
+# Default Variables for the role.
+# Actually these are surely overridden by the tasks of the role
+# The purpose is indeed to create a set of variables based on project name
+
+base_dir: "/vagrant"
+project_name: ""
+project_server_index_folder: ""
+mysql_database_name: ""
+mysql_database_user: ""
+mysql_database_password: ""
+generating_variables:
+  - project_server_index_folder
+  - mysql_database_name
+  - mysql_database_user
+  - mysql_database_password
