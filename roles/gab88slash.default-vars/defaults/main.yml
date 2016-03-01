@@ -5,12 +5,3 @@
 
 base_dir: "/vagrant"
 project_name: ""
-project_server_index_folder: ""
-mysql_database_name: ""
-mysql_database_user: ""
-mysql_database_password: ""
-generating_variables:
-  - project_server_index_folder
-  - mysql_database_name
-  - mysql_database_user
-  - mysql_database_password
