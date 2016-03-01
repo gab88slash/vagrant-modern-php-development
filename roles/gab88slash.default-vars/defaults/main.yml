@@ -1,0 +1,7 @@
+---
+# Default Variables for the role.
+# Actually these are surely overridden by the tasks of the role
+# The purpose is indeed to create a set of variables based on project name
+
+base_dir: "/vagrant"
+project_name: ""
