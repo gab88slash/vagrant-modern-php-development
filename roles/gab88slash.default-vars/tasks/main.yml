@@ -18,3 +18,9 @@
     "{{ item }}": "{{ vars['__' + item ] }}"
   with_items: "{{ generating_variables }}"
   when: "{{ item }} == ''"
+
+- name: The final variables that will be used in the next roles are
+  debug:
+    var: "{{ item }}"
+  with_items: "{{ generating_variables }}"
+
