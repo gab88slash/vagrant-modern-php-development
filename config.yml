@@ -1,3 +1,38 @@
-- project: prova
-- project_root: vagrant/{{project}}/public
-- sql_user: "{{ project }}"
+---
+# Variable used in the playbook. They are setted by the role default-vars but here can be overriden if needed
+
+#
+# Base root directory on the server of the project
+# default: /vagrant
+#
+# - base_dir: "/vagrant"
+
+#
+# Name of the project
+# default: name of the local directory where the playbook is placed
+#
+# - project_name: "my_project"
+
+#
+# Index directory of the web server by default follow the laravel convention :base_dir/:project_name/public
+# default: "{{base_dir}}/{{project_name}}/public"
+#
+# - project_server_index_folder: ""
+
+#
+# Name of the database mySql
+# default: "{{ project_name }}"
+#
+- mysql_database_name: "database"
+
+#
+# Name of the user for accessing the database mySql
+# default: "{{ mysql_database_name }}"
+#
+# - mysql_database_user: ""
+
+#
+# Password to access mySql database mySql
+# default: "{{ mysql_database_user }}"
+#
+# - mysql_database_password: ""
