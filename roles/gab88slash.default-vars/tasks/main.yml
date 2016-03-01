@@ -2,15 +2,10 @@
 # This role will create the default variables if not already provided
 
 # define project_name based on directory if not provided
-
-- name: Get project directory
-  shell: echo "$PWD" | sed 's!.*/!!'
-  register: __project_name
-  when: project_name == ""
-
+# if not setted we get project name from base directory
 - name: Set project name based on project directory
   set_fact:
-    project_name: "{{ __project_name.stdout }}"
+    project_name: "{{ playbook_dir | basename }}"
   when: project_name == ""
 
 # now that we are sure project_name is well defined we can define the default variables
