@@ -23,7 +23,7 @@
 # Name of the database mySql
 # default: "{{ project_name }}"
 #
-- mysql_database_name: "database"
+# - mysql_database_name: ""
 
 #
 # Name of the user for accessing the database mySql
