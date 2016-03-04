@@ -26,10 +26,10 @@
 # - mysql_database_name: ""
 
 #
-# Name of the user for accessing the database mySql
+# Name of the user for accessing the database mySql ATTENTION! NOT MORE THAN 16 character
 # default: "{{ mysql_database_name }}"
 #
-# - mysql_database_user: ""
+# - mysql_database_user: "test"
 
 #
 # Password to access mySql database mySql

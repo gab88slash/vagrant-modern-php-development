@@ -5,3 +5,4 @@
   - src: geerlingguy.phpmyadmin
   - src: geerlingguy.nodejs
   - src: geerlingguy.composer
+  - src: ssachtleben.apache-mcrypt

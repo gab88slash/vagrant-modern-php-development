@@ -7,27 +7,42 @@
     #or
     #tasks:
     #or
+    vars:
+      - php_session_save_path: "/tmp"
+      - php_packages:
+        - php5
+        - php5-mcrypt
+        - php5-cli
+        - php5-common
+        - php5-curl
+        - php5-dev
+        - libapache2-mod-php5
+#      - apache_vhosts_filename: laravelHost.conf
+      - apache_remove_default_vhost: true
+      - apache_vhosts:
+        - servername: localhost
+          documentroot: "{{ project_server_index_folder }}"
     roles:
+      - role: gab88slash.default-vars
+      - role: geerlingguy.php
+
       #Install and configure apache
       - role: geerlingguy.apache
-        apache_vhosts_filename: laravelHost.conf
-        apache_remove_default_vhost: true
-        apache_vhosts:
-          - servername: localhost
-            documentroot: "{{ project_root }}"
+      - role: ssachtleben.apache-mcrypt
       #Install mysql and configure it with basic settings
       # plus a db and a user with privileges on that db
       - role: geerlingguy.mysql
         mysql_databases:
-          - name: "{{ project }}"
+          - name: "{{ mysql_database_name }}"
         mysql_users:
-          - name: "{{ sql_user }}"
-            password: "{{ sql_user }}"
-            priv: "{{ project }}.*:ALL"
-    # Install php and package needed by debian based distribution
-      - role: geerlingguy.php
+          - name: "{{ mysql_database_user }}"
+            password: "{{ mysql_database_password }}"
+            priv: "{{ mysql_database_name }}.*:ALL"
+
       # Install e configure phpmyadmin
-      - role: geerlingguy.phpmyadmin
+      - role: geerlingguy.php-mysql
+
+      - role: gab88slash.phpmyadmin
       # Install composer
       - role: geerlingguy.nodejs
         nodejs_version: "0.12"
@@ -39,17 +54,17 @@
       - role: geerlingguy.composer
     tasks:
     #http://jeremykendall.net/2013/08/09/vagrant-synced-folders-permissions/
-      - name: Change Apache User and group
-        sudo: True
-        replace: >
-          dest=/etc/apache2/envvars
-          regexp="^(export APACHE_RUN_(USER|GROUP)=)www-data"
-          replace="\1vagrant"
-          backup=yes
-        notify: restart apache
-      - name: Change owner of apache.lock
-        sudo: True
-        file: >
-          path="/var/lock/apache2"
-          owner=vagrant
-          group=www-data
+#      - name: Change Apache User and group
+#        sudo: True
+#        replace: >
+#          dest=/etc/apache2/envvars
+#          regexp="^(export APACHE_RUN_(USER|GROUP)=)www-data"
+#          replace="\1vagrant"
+#          backup=yes
+#        notify: restart apache
+#      - name: Change owner of apache.lock
+#        sudo: True
+#        file: >
+#          path="/var/lock/apache2"
+#          owner=vagrant
+#          group=www-data
