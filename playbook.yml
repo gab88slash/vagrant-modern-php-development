@@ -42,7 +42,7 @@
       # Install e configure phpmyadmin
       - role: geerlingguy.php-mysql
 
-      - role: gab88slash.phpmyadmin
+      - role: geerlingguy.phpmyadmin
       # Install composer
       - role: geerlingguy.nodejs
         nodejs_version: "0.12"
