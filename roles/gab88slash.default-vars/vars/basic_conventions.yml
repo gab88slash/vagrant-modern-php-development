@@ -1,0 +1,7 @@
+---
+# default server base root is based on laravel standard and so under the public dir in the project folder
+__project_server_index_folder: "{{ base_dir }}/{{ project_name }}/public"
+__mysql_database_name: "{{ project_name }}"
+__mysql_database_user: "{{ __mysql_database_name if ( mysql_database_name == '' ) else mysql_database_name }}"
+__mysql_database_password: "{{ __mysql_database_user if ( mysql_database_user == '' ) else mysql_database_user }}"
+
