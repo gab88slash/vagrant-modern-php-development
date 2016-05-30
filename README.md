@@ -2,6 +2,10 @@
 
 This is the first release by using of ansible galaxy for requirements and geerlinguy roles for configuration plus other few stuffs.
 
+## Requirements
+
+Ansible 2+
+Vagrant
 
 ## How to use it
 
