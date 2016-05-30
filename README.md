@@ -4,8 +4,8 @@ This is the first release by using of ansible galaxy for requirements and geerli
 
 ## Requirements
 
-Ansible 2+
-Vagrant
+- Ansible 2+
+- Vagrant
 
 ## How to use it
 
