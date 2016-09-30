@@ -10,52 +10,77 @@
     vars:
       - php_session_save_path: "/tmp"
       - php_packages:
-        - php5
-        - php5-mcrypt
-        - php5-cli
-        - php5-common
-        - php5-curl
-        - php5-dev
-        - libapache2-mod-php5
-#      - apache_vhosts_filename: laravelHost.conf
-      - apache_remove_default_vhost: true
-      - apache_vhosts:
-        - servername: localhost
-          documentroot: "{{ project_server_index_folder }}"
-      - php_mysql_package: php5-mysql
+        - php
+        - php-mcrypt
+        - php-cli
+        - php-common
+        - php-curl
+        - php-dev
+      - php_enable_php_fpm: true
+      - php_fpm_listen: "/var/run/php-fpm.sock"
+      - php_fpm_listen_allowed_clients: "0.0.0.0"
+      - php_fpm_pm_max_children: 50
+      - php_fpm_pm_start_servers: 5
+      - php_fpm_pm_min_spare_servers: 5
+      - php_fpm_pm_max_spare_servers: 5
+      - php_fpm_pool_user: "vagrant"
+      - php_fpm_pool_group: "vagrant"
+      - php_webserver_daemon: "nginx"
+      - nginx_remove_default_vhost: true
+      - nginx_vhosts:
+        - listen: "80 default_server"
+          server_name: "example.com"
+          root: "{{ project_server_index_folder }}"
+          index: "index.php index.html index.htm"
+          # error_page: ""
+          # access_log: ""
+          # error_log: ""
+          extra_parameters: |
+            location ~ \.php$ {
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass unix:/var/run/php-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+            }
+      - php_mysql_package: php-mysql
     roles:
       - role: gab88slash.default-vars
       - role: geerlingguy.php
       #Install and configure apache
-      - role: geerlingguy.apache
-      - role: ssachtleben.apache-mcrypt
+      - role: geerlingguy.nginx
+      #- role: ssachtleben.apache-mcrypt
       #Install mysql and configure it with basic settings
       # plus a db and a user with privileges on that db
       - role: geerlingguy.mysql
         mysql_databases:
           - name: "{{ mysql_database_name }}"
         mysql_users:
+          - name: "bench"
+            host: "%"
+            password: "bench"
+            priv: "*.*:ALL"
           - name: "{{ mysql_database_user }}"
+            host: "%"
             password: "{{ mysql_database_password }}"
             priv: "{{ mysql_database_name }}.*:ALL"
       # Install e configure phpmyadmin
       - role: geerlingguy.php-mysql
-      - role: geerlingguy.phpmyadmin
           # Install composer
       - role: geerlingguy.composer
     tasks:
     #http://jeremykendall.net/2013/08/09/vagrant-synced-folders-permissions/
-      - name: Change Apache User and group
-        sudo: True
-        replace: >
-          dest=/etc/apache2/envvars
-          regexp="^(export APACHE_RUN_(USER|GROUP)=)www-data"
-          replace="\1vagrant"
-          backup=yes
-        notify: restart apache
-      - name: Change owner of apache.lock
-        sudo: True
-        file: >
-          path="/var/lock/apache2"
-          owner=vagrant
-          group=www-data
+      # - name: Change Apache User and group
+      #   sudo: True
+      #   replace: >
+      #     dest=/etc/php5/fpm/pool.d/www.conf
+      #     regexp="^(export APACHE_RUN_(USER|GROUP)=)www-data"
+      #     replace="\1vagrant"
+      #     backup=yes
+      #   notify: restart apache
+      # - name: Change owner of apache.lock
+      #   sudo: True
+      #   file: >
+      #     path="/var/lock/apache2"
+      #     owner=vagrant
+      #     group=www-data
